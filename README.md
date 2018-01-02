@@ -71,3 +71,7 @@ With the above configuration, only users with email addresses on the domains "on
 One of the following cases will occur:
 1. If self-registration is enabled (Under Administration > Settings > Authentication), user is redirected to 'my/page'
 2. Otherwse, the an account is created for the user (referencing their Google OAuth2 ID). A Redmine administrator must activate the account for it to work.
+
+### The operation has been confirmed
+3.3.2
+3.4.3
