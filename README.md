@@ -8,7 +8,7 @@ Download the plugin and install required gems:
 
 ```console
 cd /path/to/redmine/plugins
-git clone https://github.com/twinslash/redmine_omniauth_google.git
+git clone https://github.com/tasogarei/redmine_omniauth_google.git
 cd /path/to/redmine
 bundle install
 ```
@@ -24,15 +24,12 @@ To authenticate via Google you must first register your redmine instance via the
 
 * Go to the [registration](https://cloud.google.com/console) link.
 * Click your Project's name
-* Click "APIs & Auth"
-* Click "Registered Apps"
-* Click "Register App"
-* Type a name for the application, e.g. "My Redmine"
+* Click "APIs & Services" -> "Credentials"
+* Click "Create credentials" -> "OAuth ClientId"
 * Select "Web Application" as the Platform
-* Click "Register"
-* Click "OAuth 2.0 Client ID"
-* Enter "https://mydomain.com/redmine/oauth2callback", where "mydomain.com/redmine" is the domain / path for your redmine instance. *** The plugin will not work without this setting ***
-* Click "Generate"
+* Type a Name for the application, e.g. "My Redmine"
+* Type a Authorized redirect URIs for the callback url("https://mydomain.com/redmine/oauth2callback"), where "mydomain.com/redmine" is the domain / path for your redmine instance. *** The plugin will not work without this setting ***
+* Click "Create"
 * Save the Client ID and Client Secret for the configuration of the Redmine plugin (see below)
 
 ### Configuration
