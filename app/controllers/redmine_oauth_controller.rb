@@ -26,21 +26,36 @@ class RedmineOauthController < AccountController
       if params[:state] != state
         flash[:error] = l(:error_in_state_check)
         redirect_to signin_path
-      else
-        token = oauth_client.auth_code.get_token(params[:code], :redirect_uri => oauth_google_callback_url)
-        result = token.get('https://www.googleapis.com/oauth2/v1/userinfo')
-        info = JSON.parse(result.body)
-        if info && info["verified_email"]
-          if allowed_domain_for?(info["email"])
+        return
+      end
+
+      token = oauth_client.auth_code.get_token(params[:code], :redirect_uri => oauth_google_callback_url)
+
+      validator = GoogleIDToken::Validator.new
+      payload = validator.check(token["id_token"], settings['client_id'])
+      unless check_id_token_for? payload
+        flash[:error] = l(:fail_id_token)
+        redirect_to signin_path
+        return
+      end
+
+      result = token.get('https://www.googleapis.com/oauth2/v3/userinfo', 'access_token' => token["access_token"])
+      info = JSON.parse(result.body)
+      if info && info["email_verified"]
+        if allowed_domain_for?(info["email"])
+          if payload['sub'] == info['sub']
             try_to_login info
           else
-            flash[:error] = l(:notice_domain_not_allowed, :domain => parse_email(info["email"])[:domain])
-            redirect_to signin_path
+            flash[:error] = l(:diff_payload_profile)
+            redirect_to signin_path  
           end
         else
-          flash[:error] = l(:notice_unable_to_obtain_google_credentials)
+          flash[:error] = l(:notice_domain_not_allowed, :domain => parse_email(info["email"])[:domain])
           redirect_to signin_path
         end
+      else
+        flash[:error] = l(:notice_unable_to_obtain_google_credentials)
+        redirect_to signin_path
       end
     end
   end
@@ -104,6 +119,6 @@ class RedmineOauthController < AccountController
   end
 
   def scopes
-    'openid email'
+    'openid email profile'
   end
 end
