@@ -1,6 +1,6 @@
 ## Redmine omniauth google
 
-This plugin is used to authenticate Redmine users using Google's OAuth2 provider.
+This plugin is used to authenticate Redmine users using Google's OpenId Connect provider.
 
 ### Installation:
 
@@ -75,3 +75,34 @@ One of the following cases will occur:
 ### The operation has been confirmed
 3.3.2
 3.4.3
+
+### More
+If the Google's icon does not meet Redmine's theme, you can change it.
+Default icon is `btn_google_signin_dark_normal_web.png`.
+
+Change File : `/app/views/hooks/_view_account_login_bottom.html.erb`
+
+#### Dark icon
+```
+<%= stylesheet_link_tag 'buttons', :plugin => 'redmine_omniauth_google' %>
+
+<% if Setting.plugin_redmine_omniauth_google['oauth_authentification'] %>
+  <%= link_to oauth_google_path(:back_url => back_url) do %>
+    <%= button_tag :class => 'button-login' do %>
+      <%= image_tag('/plugin_assets/redmine_omniauth_google/images/btn_google_signin_dark_normal_web.png', :class => 'button-login-icon', :alt => l(:login_via_google)) %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+#### Light icon
+```
+<%= stylesheet_link_tag 'buttons', :plugin => 'redmine_omniauth_google' %>
+
+<% if Setting.plugin_redmine_omniauth_google['oauth_authentification'] %>
+  <%= link_to oauth_google_path(:back_url => back_url) do %>
+    <%= button_tag :class => 'button-login' do %>
+      <%= image_tag('/plugin_assets/redmine_omniauth_google/images/btn_google_signin_light_normal_web.png', :class => 'button-login-icon', :alt => l(:login_via_google)) %>
+    <% end %>
+  <% end %>
+<% end %>
+```
