@@ -9,9 +9,11 @@ module Helpers
     end
 
     def check_id_token_for? payload
+      now = Time.now.to_i
       return unless payload['email_verified']
       return unless payload['iss'].end_with?('accounts.google.com')
-      return payload['iss'].to_i <= Time.now.to_i
+      return unless payload['exp '].to_i <= now
+      return payload['iat'].to_i <= now
     end
   end
 end
