@@ -2,12 +2,12 @@ require 'redmine'
 require_dependency 'redmine_omniauth_google/hooks'
 
 Redmine::Plugin.register :redmine_omniauth_google do
-  name 'Redmine Omniauth Google plugin'
-  author 'Dmitry Kovalenok'
+  name 'Redmine Omniauth Google plugin(Fork)'
+  author 'tasogarei'
   description 'This is a plugin for Redmine registration through google'
   version '0.0.1'
-  url 'https://github.com/twinslash/redmine_omniauth_google'
-  author_url 'http://twinslash.com'
+  url 'https://github.com/tasogarei/redmine_omniauth_google'
+  author_url ''
 
   settings :default => {
     :client_id => "",
