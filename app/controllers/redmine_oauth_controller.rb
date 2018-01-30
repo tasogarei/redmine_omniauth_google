@@ -10,7 +10,8 @@ class RedmineOauthController < AccountController
       session[:back_url] = params[:back_url]
       state = SecureRandom.uuid
       session[:state] = state
-      redirect_to oauth_client.auth_code.authorize_url(:redirect_uri => oauth_google_callback_url, :scope => scopes, :state => state)
+      logger.info(request.scheme)
+      redirect_to oauth_client.auth_code.authorize_url(:redirect_uri => google_callback_url, :scope => scopes, :state => state)
     else
       password_authentication
     end
@@ -29,7 +30,7 @@ class RedmineOauthController < AccountController
         return
       end
 
-      token = oauth_client.auth_code.get_token(params[:code], :redirect_uri => oauth_google_callback_url)
+      token = oauth_client.auth_code.get_token(params[:code], :redirect_uri => google_callback_url)
 
       validator = GoogleIDToken::Validator.new
       payload = validator.check(token["id_token"], settings['client_id'])
@@ -119,5 +120,9 @@ class RedmineOauthController < AccountController
 
   def scopes
     'openid email profile'
+  end
+
+  def google_callback_url
+    oauth_google_callback_url(:protocol => request.scheme)
   end
 end
