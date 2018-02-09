@@ -10,7 +10,6 @@ class RedmineOauthController < AccountController
       session[:back_url] = params[:back_url]
       state = SecureRandom.uuid
       session[:state] = state
-      logger.info(request.scheme)
       redirect_to oauth_client.auth_code.authorize_url(:redirect_uri => google_callback_url, :scope => scopes, :state => state)
     else
       password_authentication
