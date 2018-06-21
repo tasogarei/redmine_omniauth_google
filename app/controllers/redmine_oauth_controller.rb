@@ -66,7 +66,7 @@ class RedmineOauthController < AccountController
    user = User.joins(:email_addresses).where(:email_addresses => { :address => info["email"] }).first_or_create
     if user.new_record?
       # Self-registration off
-      redirect_to(home_url) && return unless Setting.self_registration?
+      redirect_to(home_url) && return unless Setting.self_registration? || settings['ignore_self_registration']
       # Create on the fly
       user.firstname = info["family_name"]
       user.lastname = info["given_name"]
